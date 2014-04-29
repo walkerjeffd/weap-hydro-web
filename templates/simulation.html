@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% set active_page = "simulation" %}
+
+{% block title %}Simulation{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      <div id="controls" class="text-center">
+      </div>
+      <hr>
+      {% include 'tabs-parameters.html' %}
+      <!--<hr>
+      <h4>Model Diagram</h4>
+      <div id="diagram"></div>-->    
+    </div>
+    <div class="col-md-6">
+      <div class="chart-container">
+        <div id="chart-precip"></div>
+        <div id="chart-storage"></div>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-primary" data-target="#modal-add-chart" data-toggle="modal" id="btn-add-chart">+ Add Chart</button>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <h4>Mass Balance Summary</h4>
+      <ul class="list-unstyled">
+        <li><abbr title="Precipitation">Total Inflow</abbr>: <span id="sum-in"></span> in</li>
+        <li><abbr title="Flow + Evapotranspiration">Total Outflow</abbr>: <span id="sum-out"></span> in</li>
+        <li><abbr title="Change in Soil Moisture, Groundwater, Snow">Net Storage</abbr>: <span id="sum-net"></span> in</li>
+        <li><abbr title="Net Storage + Total Outflow - Total Inflow">Error</abbr>: <span id="sum-error"></span> in</li>
+      </ul>
+    </div>
+  </div>
+
+
+<div class="modal fade" role="dialog" id="modal-add-chart">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Add Chart</h3>
+      </div>
+      <div class="modal-body">
+        <h4>Select Variables</h4>
+        <select name="select-add-chart" id="select-add-chart" multiple="multiple" size="10">
+          <option value="Q">Simulated Streamflow (in)</option>
+          <option value="obsQ">Observed Streamflow (in)</option>
+          <option value="resQ">Residual Streamflow (Obs-Sim) (in)</option>
+          <option value="P">Observed Precipitation (in)</option>
+          <option value="S">Soil Moisture (in)</option>
+          <option value="W">Available Water (in)</option>
+          <option value="Y">Evapotranspiration Opportunity (in)</option>
+          <option value="DR">Direct Runoff (in)</option>
+          <option value="PET">Potential Evapotranspiration (in)</option>
+          <option value="SR">Solar Radiation (in)</option>
+          <option value="ET">Evapotranspiration (in)</option>
+          <option value="G">Groundwater Storage (in)</option>
+          <option value="GR">Groundwater Recharge (in)</option>
+          <option value="GD">Groundwater Discharge (in)</option>
+          <option value="Tmin">Min Temperature (degC)</option>
+          <option value="Tmax">Max Temperature (degC)</option>
+          <option value="Tavg">Average Temperature (degC)</option>
+          <option value="Trng">Temperature Range (degC)</option>
+        </select>
+        <br>
+        <p> </p>
+        <p>Note: Use ctrl+click to show multiple variables on one chart</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-primary" data-dismiss="modal" id="btn-add-chart-ok">Ok</a>
+        <a href="#" class="btn btn" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+
+{% include 'control-modals.html' %}
+
+<div class="modal fade" role="dialog" id="modal-help">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Simulation Help</h3>
+      </div>
+      <div class="modal-body">
+        <h4>Description</h4>
+        <p></p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

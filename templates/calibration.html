@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% set active_page = "calibration" %}
+
+{% block title %}Calibration{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="text-center" id="controls">
+      </div>
+      <hr>
+      {% include 'tabs-parameters.html' %}
+    </div>
+    <div class="col-md-6">
+      <div id="chart-line"></div>
+
+      <div class="row">
+        <div class="col-xs-6 col-lg-6">
+          <div id="chart-scatter"></div>
+        </div>
+        <div class="col-xs-6 col-lg-6">
+          <div id="chart-cdf"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div id="stats">
+        <h4>Goodness-of-fit Statistics</h4>
+        <ul class="list-unstyled">
+          <li><strong><abbr title="Root Mean Square Error">RMSE</abbr></strong>: <span id="stat-rmse"></span></li>
+          <li><strong><abbr title="Nash-Sutcliffe Efficiency">NSE</abbr></strong>: <span id="stat-nse"></span></li>
+        </ul>
+        <small>Note: All statistics computed from log-transformed variables</small>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block modals %}
+
+{% include 'control-modals.html' %}
+
+<div class="modal fade" role="dialog" id="modal-help">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Calibration Help</h3>
+      </div>
+      <div class="modal-body">
+        <h4>Description</h4>
+        <p></p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

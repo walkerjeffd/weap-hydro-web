@@ -1,0 +1,52 @@
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab-root" data-toggle="tab">Root</a></li>
+        <li><a href="#tab-gw" data-toggle="tab">GW</a></li>
+        <li><a href="#tab-snow" data-toggle="tab">Snow</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane tab-param active" id="tab-root">
+          <dl>
+            <dt>Initial Storage: <span id="param-z1_0"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="1" step="0.1" value="0.5" name="z1_0"/></dd>
+
+            <dt>Capacity (mm): <span id="param-D_1"></span></dt>
+            <dd><input class="slider" type="range" min="10" max="100" step="1" value="50" name="D_1" /></dd>
+
+            <dt>Conductivity: <span id="param-k_1"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="1" step="0.1" value="0.5" name="k_1" /></dd>
+
+            <dt>Crop Coefficient: <span id="param-k_c"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="1" step="0.1" value="0.5" name="k_c" /></dd>
+
+            <dt>Runoff Roughness: <span id="param-RRF"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="1" step="0.1" value="0.5" name="RRF" /></dd>
+
+            <dt>Partition Coeff: <span id="param-f"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="1" step="0.1" value="0.5" name="f" /></dd>
+          </dl>
+        </div>
+        <div class="tab-pane tab-param" id="tab-gw">
+          <dl>
+            <dt>Initial Storage: <span id="param-z2_0"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="1" step="0.1" value="0.5" name="z2_0"/></dd>
+
+            <dt>Capacity (mm): <span id="param-D_2"></span></dt>
+            <dd><input class="slider" type="range" min="10" max="100" step="1" value="50" name="D_2" /></dd>
+
+            <dt>Conductivity (mm/day): <span id="param-k_2"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="1" step="0.1" value="0.5" name="k_2" /></dd>
+          </dl>
+        </div>
+        <div class="tab-pane tab-param" id="tab-snow">
+          <dl>
+            <dt>Initial Snow Accumulation: <span id="param-Ac_0"></span></dt>
+            <dd><input class="slider" type="range" min="0" max="5" step="0.1" value="0" name="Ac_0"/></dd>
+
+            <dt>Melt Temp (degC): <span id="param-T_s"></span></dt>
+            <dd><input class="slider" type="range" min="-5" max="5" step="0.1" value="-2" name="T_s" /></dd>
+
+            <dt>Freeze Temp (degC): <span id="param-T_l"></span></dt>
+            <dd><input class="slider" type="range" min="-5" max="5" step="0.1" value="2" name="T_l" /></dd>
+          </dl>
+        </div>
+      </div>

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% set active_page = "setup" %}
+
+{% block title %}Model Setup{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xs-3">
+      <div id="controls" class="text-center">
+        <div class="btn-toolbar">
+          <button class="btn btn-primary" id="btn-save">
+            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+          </button>
+          <button class="btn btn-danger" data-target="#modal-delete" data-toggle="modal" id="btn-delete-ode">
+            <span class="glyphicon glyphicon-trash"></span> Delete
+          </button>
+          <button class="btn btn-success" data-target="#modal-help" data-toggle="modal">
+            <span class="glyphicon glyphicon-question-sign"></span> Help
+          </button>
+        </div>
+      </div>
+      <hr>
+      <h4>Watershed Information</h4>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="#input-name" class="col-sm-3 control-label">Name:</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="input-name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="#input-latitude" class="col-sm-3 control-label">Latitude:</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="input-latitude">
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="text-center">
+        <h4>Input Data File</h4>
+        <div class="dropzone" id="holder-input">
+          <div style="padding-top: 40px; z-index: -1;">Drop CSV File Here</div>
+        </div>
+      </div>
+      <hr>
+      <div class="text-center">
+        <!-- <button class="btn btn-default" data-target="#modal-load" data-toggle="modal" id="btn-load">Load Existing Model</button> -->
+      </div>
+    </div>
+    <div class="col-xs-9">
+      <div id="instructions" style="display:none;"></div>
+      <div id="chart-temp"></div>
+      <div id="chart-precip"></div>
+      <div id="chart-rh"></div>
+      <div id="chart-cloud"></div>
+      <div id="chart-wind"></div>
+    </div>
+  </div>
+
+  <div class="modal fade" role="dialog" id="modal-load">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3>Load Existing Model</h3>
+        </div>
+        <div class="modal-body">
+          <p>If you have a model configuration file in JSON format (created from the Export page), you can load it by dropping the file on the area below.</p>
+          <div class="text-center">
+            <div class="dropzone" id="holder-load">
+              <div style="padding-top: 40px; z-index: -1;">Drop JSON File Here</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block modals %}
+
+{% include 'control-modals.html' %}
+
+<div class="modal fade" role="dialog" id="modal-help">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Setup Help</h3>
+      </div>
+      <div class="modal-body">
+        <h4>Instructions</h4>
+        <ol>
+          <li>Enter watershed name</li>
+          <li>Enter watershed latitude in decimal degrees North (e.g. 42.4123)</li>
+          <li>Drag and drop CSV input data file from your desktop</li>
+          <li>Click Save button</li>
+        </ol>
+        <h4>Input Data Format</h4>
+        <p>Input data must be in a comma-separated value (CSV) file format with the following columns:</p>
+        <ul>
+          <li><strong>Date</strong>: Date in format "m/d/yyyy" (e.g. 3/10/2014)</li>
+          <li><strong>P_i</strong>: Precipitation (mm/day)</li>
+          <li><strong>T</strong>: Mean air temperature (degrees C)</li>
+          <li><strong>f_c</strong>: Fraction cloudiness (0-1)</li>
+          <li><strong>RH</strong>: Relative humidity (%)</li>
+          <li><strong>u2</strong>: Wind speed at height of 2 m(m/s)</li>
+        </ul>
+        <p><i>Example File Format</i>:</p>
+        <img src="{{ url_for('static', filename='img/input_file_example.png') }}" alt="Example input file">
+        <h4>Need an Input File?</h4>
+        <p>Here is an example input file: <a href="{{ url_for('static', filename='data/test.csv') }}" download="test.csv">test.csv</a></p>
+        <p><i>Note</i>: If you are using Internet Explorer, you may need to change the file extension from ".xls" to ".csv"</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
