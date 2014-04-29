@@ -15,7 +15,7 @@ define([
     initialize: function (options) {
       this.dispatcher = options.dispatcher;
       $('#btn-delete').on('click', this.deleteApp.bind(this));
-      
+
       this.render();
     },
 
@@ -59,6 +59,6 @@ define([
     }
 
 	});
-	
+
 	return ControlView;
 });

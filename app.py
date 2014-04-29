@@ -2,15 +2,13 @@ from flask import Flask, render_template, url_for
 from flask.ext.frozen import Freezer
 import sys
 
-# flask config
-DEBUG = True
-
 # create app
 app = Flask(__name__)
-app.config.from_object(__name__)
+app.config['DEBUG'] = True
+app.config['FREEZER_BASE_URL'] = '/sei'
 
 # create freezer
-freezer = Freezer(app)
+freezer = Freezer(app, with_static_files=False)
 
 # add views
 @app.route('/')
