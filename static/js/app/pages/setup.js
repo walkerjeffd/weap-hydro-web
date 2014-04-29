@@ -22,7 +22,7 @@ define([
       console.log('Initialize: SetupPage');
 
       this.dispatcher = options.dispatcher;
-      
+
       this.$name = this.$('#input-name');
       this.$latitude = this.$('#input-latitude');
 
@@ -30,7 +30,7 @@ define([
 
       this.initDragDrop(this.$('#holder-input'), this.loadInputData, this);
       this.initDragDrop(this.$('#holder-load'), this.loadExistingModel, this);
-      this.initCharts();      
+      this.initCharts();
 
       this.listenTo(this.model, 'change:input', this.render);
       this.listenTo(this.model, 'sync', this.updateModelInfo);
@@ -142,11 +142,11 @@ define([
 
     loadInputData: function(data, that) {
       var dateFormat = d3.time.format('%m/%d/%Y');
-      
+
       var parsers = {
-        'Date': function(v) { return dateFormat.parse(v); }, 
-        'P_i': function(v) { return +v; }, 
-        'T': function(v) { return +v; }, 
+        'Date': function(v) { return dateFormat.parse(v); },
+        'P_i': function(v) { return +v; },
+        'T': function(v) { return +v; },
         'f_c': function(v) { return +v; },
         'RH': function(v) { return +v; },
         'u2': function(v) { return +v; }
@@ -155,7 +155,7 @@ define([
       data.forEach(function(row) {
         d3.keys(parsers).forEach(function (key) {
           if (key in row) {
-            row[key] = parsers[key](row[key]); 
+            row[key] = parsers[key](row[key]);
           }
         });
       });
@@ -193,7 +193,7 @@ define([
         d3.select('#chart-cloud').call(this.charts.Cloud.data(this.model.get('input')));
         d3.select('#chart-rh').call(this.charts.RH.data(this.model.get('input')));
         d3.select('#chart-wind').call(this.charts.Wind.data(this.model.get('input')));
-        
+
       } else {
         this.$('#instructions').show();
       }

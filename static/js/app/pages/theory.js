@@ -2,11 +2,7 @@ define([
   'jquery',
   'backbone',
   'd3',
-  'app/charts',
-  'app/equations',
-  'app/views/soil_theory_chart',
-  'app/views/gw_theory_chart',
-  'app/views/diagram'
+  'app/charts'
 ], function ($, Backbone, d3, Charts, Equations, SoilTheoryChart, GwTheoryChart, Diagram) {
   'use strict';
 
@@ -23,7 +19,7 @@ define([
       this.gwChart = new GwTheoryChart({model: this.model, id: 'chart-gw', height: 300, width: 390});
 
       this.initSliders();
-      
+
       this.render();
 
       this.dispatcher.trigger('status', 'Ready!');
@@ -37,7 +33,7 @@ define([
         that.$("#param-"+this.name).text(this.value);
       });
     },
-    
+
     initSliders: function() {
       var that = this;
       this.$(".slider").change(function() {

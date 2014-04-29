@@ -7,12 +7,9 @@ define([
   'app/charts',
   'app/utils',
   'app/sim',
-  'app/views/soil_theory_chart',
-  'app/views/gw_theory_chart',
-  'app/views/diagram',
   'app/views/controls',
   'app/views/chart'
-], function ($, _, Backbone, Bootstrap, d3, Charts, Utils, SimModel, SoilTheoryChart, GWTheoryChart, Diagram, ControlsView, ChartView) {
+], function ($, _, Backbone, Bootstrap, d3, Charts, Utils, SimModel, ControlsView, ChartView) {
   'use strict';
 
   var SimulationPage = Backbone.View.extend({
@@ -28,30 +25,10 @@ define([
 
     initialize: function(options) {
       console.log('Initialize: SimulationPage');
-      
       this.dispatcher = options.dispatcher;
-      
       this.controlsView = new ControlsView({model: this.model, el: this.$('#controls'), dispatcher: this.dispatcher});
-      
-      // this.soilChart = new SoilTheoryChart({
-      //   model: this.model, 
-      //   id: 'chart-soil', 
-      //   width: 270, 
-      //   height: 200,
-      //   yLabel: ' '
-      // });
-
-      // this.gwChart = new GWTheoryChart({
-      //   model: this.model,
-      //   id: 'chart-gw', 
-      //   width: 270, 
-      //   height: 200,
-      //   yLabel: ' '
-      // });
 
       this.simModel = new SimModel();
-
-      // this.diagram = new Diagram({model: this.model, el: this.$('#diagram')});
 
       this.zoomTranslate = [0, 0];
       this.zoomScale = 1;
@@ -64,8 +41,6 @@ define([
       this.listenTo(this.model, 'change:input', this.setInput);
       this.listenTo(this.model, 'change', this.updateSliders);
 
-      // this.dispatcher.on('focus', this.focusTheory.bind(this));
-
       this.dispatcher.trigger('status', 'Ready!');
     },
 
@@ -74,24 +49,23 @@ define([
     },
 
     addChartFromModal: function(e) {
-      // console.log(e, this);
       var that = this;
 
       var variables = [];
       this.$("#select-add-chart").children(":selected").each(function(i, option) {
         variables.push(option.value);
       });
-      
+
       if (variables.length > 0) {
         this.addChart(variables);
       }
     },
 
-    focusTheory: function(x) {      
+    focusTheory: function(x) {
       if (x !== undefined) {
         var input = this.model.get('input');
         var i = 0, len = input.length;
-        
+
         // this.simModel.run(this.model);
 
         for (; i < (len-1); i++) {
@@ -112,8 +86,7 @@ define([
     initSliders: function() {
       var that = this;
       this.updateSliders();
-      $(".slider").change(function() {
-        // console.log('change: ', this.name);
+      $(".slider").on('input', function() {
         that.$("#param-"+this.name).text(this.value);
         that.model.set(this.name, +this.value);
       });
@@ -183,8 +156,8 @@ define([
     addChart: function(variables) {
       console.log("Add Chart", variables);
       var newChart = new ChartView({
-        model: this.model, 
-        variables: variables, 
+        model: this.model,
+        variables: variables,
         dispatcher: this.dispatcher
       });
       newChart.render().zoom(this.translate, this.scale);
@@ -196,37 +169,19 @@ define([
     initCharts: function() {
       console.log('Init charts');
       var that = this;
-      
+
       this.chartStorage = new Charts.ZoomableTimeseriesLineChart()
         .id(this.cid)
         .x(function(d) { return d.Date; })
         .width(550)
         .height(200)
-        // .yDomain([0.001, 2])
-        // .yScale(d3.scale.log())
-        // .color(this.model.colors)
         .yVariables(['z1', 'z2'])
         .yVariableLabels(this.model.variableLabels)
-        // .yLabel('Observed and Simulated (Red) Streamflow (in/day)')
         .onMousemove(function(x) { this.dispatcher.trigger('focus', x); }.bind(this))
         .onMouseout(function(x) { this.dispatcher.trigger('focus'); }.bind(this))
         .onZoom(function(translate, scale) { this.zoomCharts(translate, scale); }.bind(this));
 
       this.addChart(['P_i']);
-      // this.chartPrecip = new Charts.ZoomableTimeseriesLineChart()
-      //   .id(this.cid)
-      //   .x(function(d) { return d.Date; })
-      //   .width(550)
-      //   .height(200)
-      //   // .yDomain([0.001, 2])
-      //   // .yScale(d3.scale.log())
-      //   // .color(this.model.colors)
-      //   .yVariables(['P_i'])
-      //   .yVariableLabels(this.model.variableLabels)
-      //   // .yLabel('Observed and Simulated (Red) Streamflow (in/day)')
-      //   .onMousemove(function(x) { this.dispatcher.trigger('focus', x); }.bind(this))
-      //   .onMouseout(function(x) { this.dispatcher.trigger('focus'); }.bind(this))
-      //   .onZoom(function(translate, scale) { this.zoomCharts(translate, scale); }.bind(this));
 
     }
 
