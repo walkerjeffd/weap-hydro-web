@@ -3,6 +3,10 @@ WEAP Hydrology Web App
 
 Interactive web application of the WEAP hydrology sub-model. This application adapts the backbone/d3/flask framework used for the Web-based Interactive Watershed Model (WIWM) application found [here](https://github.com/walkerjeffd/phd-abcd).
 
+More information about WEAP can be found at [weap21.org](http://www.weap21.org/).
+
+The hydrology model is defined in [Yates et al., 2005](http://www.weap21.org/downloads/WEAPDSS.pdf).
+
 Build Instructions
 ==================
 
