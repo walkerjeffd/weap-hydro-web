@@ -101,15 +101,17 @@ define([
     },
 
     computeSummary: function(data) {
-      var sumPrecip = Utils.sum(_.pluck(data, 'P')),
+      var sumPrecip = Utils.sum(_.pluck(data, 'P_i')),
           sumFlow = Utils.sum(_.pluck(data, 'Q')),
           sumEvap = Utils.sum(_.pluck(data, 'ET')),
           sumOutflow = sumFlow+sumEvap,
-          initSoil = this.model.get('S0'),
-          endSoil = data[data.length-1]['S'],
-          initGW = this.model.get('G0'),
-          endGW = data[data.length-1]['G'],
-          netStorage = (endSoil+endGW) - (initSoil+initGW),
+          initSnow = this.model.get('Ac_0'),
+          endSnow = data[data.length-1]['Ac'],
+          initRoot = this.model.get('z1_0')*this.model.get('D_1'),
+          endRoot = data[data.length-1]['d1'],
+          initGW = this.model.get('z2_0')*this.model.get('D_2'),
+          endGW = data[data.length-1]['d2'],
+          netStorage = (endSnow+endRoot+endGW) - (initSnow+initRoot+initGW),
           err = netStorage + sumOutflow - sumPrecip;
 
       return {
@@ -123,12 +125,12 @@ define([
     render: function() {
       if (this.model.get('input') && this.model.get('input').length > 0) {
         this.simModel.run(this.model);
-        // var stats = this.computeSummary(this.simModel.output);
+        var stats = this.computeSummary(this.simModel.output);
 
-        // d3.select('#sum-in').text(this.formats.number(stats.sumInflow));
-        // d3.select('#sum-out').text(this.formats.number(stats.sumOutflow));
-        // d3.select('#sum-net').text(this.formats.number(stats.netStorage));
-        // d3.select('#sum-error').text(this.formats.number(stats.err));
+        d3.select('#sum-in').text(this.formats.number(stats.sumInflow));
+        d3.select('#sum-out').text(this.formats.number(stats.sumOutflow));
+        d3.select('#sum-net').text(this.formats.number(stats.netStorage));
+        d3.select('#sum-error').text(this.formats.number(stats.err));
 
         d3.select('#chart-storage').call(this.chartStorage.data(this.simModel.output));
 
@@ -175,13 +177,14 @@ define([
         .x(function(d) { return d.Date; })
         .width(550)
         .height(200)
-        .yVariables(['z1', 'z2'])
+        .yVariables(['d1', 'd2'])
         .yVariableLabels(this.model.variableLabels)
-        .onMousemove(function(x) { this.dispatcher.trigger('focus', x); }.bind(this))
-        .onMouseout(function(x) { this.dispatcher.trigger('focus'); }.bind(this))
+        // .onMousemove(function(x) { this.dispatcher.trigger('focus', x); }.bind(this))
+        // .onMouseout(function(x) { this.dispatcher.trigger('focus'); }.bind(this))
         .onZoom(function(translate, scale) { this.zoomCharts(translate, scale); }.bind(this));
 
-      this.addChart(['P_i']);
+      this.addChart(['Q']);
+      this.addChart(['P_e']);
 
     }
 

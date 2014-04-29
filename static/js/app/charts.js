@@ -2,7 +2,7 @@ define([
   'd3',
 ], function (d3) {
   'use strict';
-  
+
   var TimeseriesAreaChart = function() {
     var svg,
         margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -32,7 +32,7 @@ define([
         }
 
         if (!color) {
-          color = d3.scale.category10().domain(yVariables);      
+          color = d3.scale.category10().domain(yVariables);
         }
 
         xScale
@@ -51,7 +51,7 @@ define([
 
           var gEnter = svg.append('g')
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            
+
           gEnter.append('g').attr('class', 'x axis')
             .attr("transform", "translate(0," + yScale.range()[0] + ")");
 
@@ -102,10 +102,10 @@ define([
 
         var areas = g.select('g.areas').selectAll('.area')
           .data(yStack, function(d) { return d.name; });
-        
+
         areas.enter().append('path').attr('class', 'area')
           .on('mouseover', mouseover || function() {});
-        
+
         areas
           .attr("d", function(d) { return area(d.values); })
           .attr("fill", function(d) { return color(d.name); });
@@ -218,6 +218,19 @@ define([
         yDomain,
         lines;
 
+
+    var customTimeFormat = d3.time.format.multi([
+      [".%L", function(d) { return d.getMilliseconds(); }],
+      [":%S", function(d) { return d.getSeconds(); }],
+      ["%I:%M", function(d) { return d.getMinutes(); }],
+      ["%I %p", function(d) { return d.getHours(); }],
+      ["%b %d", function(d) { return d.getDay() && d.getDate() != 1; }],
+      ["%b %d", function(d) { return d.getDate() != 1; }],
+      ["%b", function(d) { return d.getMonth(); }],
+      ["%Y", function() { return true; }]
+    ]);
+    xAxis.tickFormat(customTimeFormat).ticks(5);
+
     function chart(selection) {
       xScale
         .range([0, width - margin.left - margin.right])
@@ -235,7 +248,7 @@ define([
 
         var gEnter = svg.append('g')
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-          
+
         gEnter.append('g').attr('class', 'x axis')
           .attr("transform", "translate(0," + yScale.range()[0] + ")");
 
@@ -269,9 +282,9 @@ define([
 
       lines = g.select('g.lines').selectAll('.line')
           .data([chartData]);
-      
+
       lines.enter().append('path').attr('class', 'line').style("stroke", function(d) { return color(yVariable); });
-      
+
       lines.attr("d", line);
 
       lines.exit().remove();
@@ -428,7 +441,7 @@ define([
 
           var gEnter = svg.enter().append('svg').append('g')
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            
+
           gEnter.append('g').attr('class', 'x axis')
             .attr("transform", "translate(0," + yScale.range()[0] + ")");
 
@@ -466,9 +479,9 @@ define([
 
         var lines = g.select('g.lines').selectAll('.line')
             .data(nestData);
-        
+
         lines.enter().append('path').attr('class', 'line');
-        
+
         lines.attr("d", function(d) { return line(d.values); })
           .style("stroke", function(d) { return color(d.name); });
 
@@ -562,7 +575,7 @@ define([
         xScale = d3.time.scale(),
         yScale = d3.scale.linear(),
         xAxis = d3.svg.axis().scale(xScale).orient("bottom"),
-        yAxis = d3.svg.axis().ticks(5, "g").orient("left"),
+        yAxis = d3.svg.axis().ticks(5).orient("left"),
         xValue = function(d) { return d[0]; },
         yValue = function(d) { return d[1]; },
         color,
@@ -613,7 +626,7 @@ define([
         if (!color) {
           color = d3.scale.category10().domain(yVariables);
         }
-        
+
         if (!zoom) {
           xScale
             .range([0, width - margin.left - margin.right])
@@ -626,7 +639,7 @@ define([
               d3.max(nestData, function(d) { return d3.max(d.values, function(d) { return d[1]; }); })]);
 
           zoom = d3.behavior.zoom().x(xScale).scaleExtent([1, 100]).on("zoom", draw);
-        }        
+        }
 
         var currentYMax = yScale.domain()[1];
         var dataYMax = d3.max(nestData, function(d) { return d3.max(d.values, function(d) { return d[1]; }); });
@@ -637,7 +650,7 @@ define([
 
         if (!svg) {
           svg = d3.select(this).append('svg');
-          
+
           if (legend) {
             var gLegend = svg.append('g').attr('class', 'legend')
               .attr("transform", "translate(" + margin.left + ",0)");
@@ -665,7 +678,7 @@ define([
 
             // shift legend items by the width of their div
             var labelWidths = [];
-            gLegendItems.each(function(d, i) { 
+            gLegendItems.each(function(d, i) {
               labelWidths.push(d3.select(this)[0][0].getBBox().width);}
             );
 
@@ -686,7 +699,7 @@ define([
 
           var gEnter = svg.append('g')
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            
+
           gEnter.append('g').attr('class', 'x axis')
             .attr("transform", "translate(0," + yScale.range()[0] + ")");
 
@@ -711,7 +724,7 @@ define([
             .attr("height", height - margin.top - margin.bottom);
 
           svg.append("rect")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")            
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
             .attr("width", width - margin.left - margin.right)
             .attr("height", height - margin.top - margin.bottom)
             .attr("class", "overlay")
@@ -743,7 +756,7 @@ define([
       // update zoom, clamp to ends of timeseries
       var distanceToEnd = xScale.range()[1] - xScale(xExtent[1]);
       zoom.translate([d3.min([d3.max([zoom.translate()[0], distanceToEnd+zoom.translate()[0]]), 0]), 0]);
-      
+
       if (onZoom) {
         // trigger zoom callback
         onZoom(zoom.translate(), zoom.scale());
@@ -757,9 +770,9 @@ define([
 
       lines = svg.select('g.lines').selectAll('.line')
             .data(nestData);
-        
+
       lines.enter().append('path').attr('class', 'line');
-      
+
       lines.attr("d", function(d) { return line(d.values); })
         .style("stroke", function(d) { return color(d.name); });
 
@@ -983,7 +996,7 @@ define([
             .on("mousemove", function() { chart.focus(xScale.invert(d3.mouse(this)[0])); })
             .on("mouseout", function() { chart.focus(); });
         }
-        
+
 
         var g = svg.select('g')
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -996,7 +1009,7 @@ define([
 
         var areas = g.select('.areas').selectAll('.area')
           .data(yStack, function(d) { return d.name; });
-        
+
         areas.enter()
           .append('path')
           .attr('class', 'area');
@@ -1231,7 +1244,7 @@ define([
             .attr("dy", 15)
             .attr("transform", "rotate(-90)")
             .style("text-anchor", "end")
-            .text(yLabel); 
+            .text(yLabel);
         gEnter.append('g').attr('class', 'circles');
 
         svg.attr("width", width)
@@ -1248,7 +1261,7 @@ define([
 
         var circles = g.select('.circles').selectAll('.circle')
           .data(chartData, function(d) { return d.Date; });
-        
+
         circles.enter()
           .append('circle')
           .attr('class', 'circle')
@@ -1264,7 +1277,7 @@ define([
 
         if (one2one) {
           g.select('.line.one2one')
-              .attr("d", line([[xScale.domain()[0], yScale.domain()[0]], 
+              .attr("d", line([[xScale.domain()[0], yScale.domain()[0]],
                                [xScale.domain()[1], yScale.domain()[1]]]));
         } else {
           g.select('.line.one2one').remove();
@@ -1454,7 +1467,7 @@ define([
             .attr("dy", 15)
             .attr("transform", "rotate(-90)")
             .style("text-anchor", "end")
-            .text(yLabel); 
+            .text(yLabel);
 
         svg.attr("width", width)
            .attr("height", height);
@@ -1470,9 +1483,9 @@ define([
 
         var lines = g.selectAll('.line')
             .data(nestData);
-        
+
         lines.enter().append('path').attr('class', 'line');
-        
+
         lines.attr("d", function(d) { return line(d.values); })
           .style("stroke", function(d) { return color(d.name); });
 
@@ -1597,7 +1610,7 @@ define([
         if (Math.abs(yExtent[1]-yExtent[0]) < 0.1) {
           yExtent = [d3.min([yExtent[0], d3.round(yValue(mergeData[0]), 1)-0.05]), d3.max([yExtent[1], d3.round(yValue(mergeData[0]), 1)+0.05])];
         }
-        
+
         yScale
           .range([height - margin.top - margin.bottom, 0])
           .domain(yDomain || yExtent)
@@ -1612,11 +1625,11 @@ define([
 
         gEnter.append('g').attr('class', 'circles');
         gEnter.append('g').attr('class', 'x axis');
-        gEnter.append('g').attr('class', 'y axis'); 
+        gEnter.append('g').attr('class', 'y axis');
         gEnter.append('g').attr('class', 'optimal');
         gEnter.append('g').attr('class', 'highlight');
-        
-        gEnter.select('.x.axis')        
+
+        gEnter.select('.x.axis')
           .append("text")
             .attr("y", 0)
             .attr("x", (width - margin.left - margin.right)/2)
@@ -1641,7 +1654,7 @@ define([
 
         g.select('.x.axis').attr("transform", "translate(0," + yScale.range()[0] + ")")
             .call(xAxis)
-            .selectAll(".tick text")  
+            .selectAll(".tick text")
               .style("text-anchor", "end")
               .attr("dx", "-.8em")
               .attr("dy", "-.5em")
@@ -1654,7 +1667,7 @@ define([
 
         var circles = g.select('.circles').selectAll('.circle')
           .data(chartData);
-        
+
         circles.enter()
           .append('circle')
           .attr('class', 'circle');
@@ -1671,7 +1684,7 @@ define([
 
         var highlightCircle = g.select('.highlight').selectAll('.circle')
           .data(highlight);
-        
+
         highlightCircle.enter()
           .append('circle')
           .attr('class', 'circle');

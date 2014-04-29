@@ -30,7 +30,7 @@
     },
     appDir: '../',
     baseUrl: 'js',
-    dir: '../../build/static',
+    dir: '../../build/sei/static',
     modules: [
         {
             name: "main"

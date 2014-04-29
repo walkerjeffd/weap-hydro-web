@@ -46,10 +46,23 @@ define([
       this.isNewModel = true;
 
       this.variableLabels = {
-        P_i: 'Precip (mm/d)',
-        Pe: 'Effective Precip (mm/d)',
-        z1: 'Root Zone Storage (mm)',
-        z2: 'Groundwater Storage (mm)'
+        Q: 'Streamflow (mm/d)',
+        Ro: 'Runoff (mm/d)',
+        Iflow: 'Interflow (mm/d)',
+        Perc: 'Percolation (mm/d)',
+        Bflow: 'Baseflow (mm/d)',
+        P_i: 'Observed Precipitation (mm/d)',
+        P_e: 'Effective Precipitation (mm/d)',
+        d1: 'Root Zone Storage (mm)',
+        d2: 'Groundwater Storage (mm)',
+        PET: 'Potential Evapotranspiration (mm/d)',
+        ET: 'Evapotranspiration (mm/d)',
+        Ac: 'Snow Accumulation (mm)',
+        melt: 'Snowmelt (degC)',
+        T: 'Mean Air Temperature (degC)',
+        RH: 'Relative Humidity (%)',
+        f_c: 'Fraction Cloudiness (-)',
+        u2: 'Wind Speed (m/s)'
       };
     },
 
